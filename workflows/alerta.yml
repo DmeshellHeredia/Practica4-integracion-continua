@@ -1,0 +1,26 @@
+name: Alerta ntfy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notificar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Ejecutar programa Hola Mundo
+        run: node app.js
+
+      - name: Enviar notificacion a ntfy
+        if: always()
+        run: |
+          curl -fsS \
+            -H "Title: Practica 4 - Integracion Continua" \
+            -H "Tags: computer,rocket" \
+            -d "Se subio codigo a la rama main del repositorio Practica4-integracion-continua. Estado del workflow: ${{ job.status }}" \
+            https://ntfy.sh/devops-itla
